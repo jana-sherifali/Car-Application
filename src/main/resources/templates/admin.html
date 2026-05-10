@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="navbar">
+        <a class="brand" th:href="@{/}">Carista Admin</a>
+        <div class="nav-links">
+            <a th:href="@{/cars}">View Website Cars</a>
+            <form class="logout-form" th:action="@{/logout}" method="post">
+                <button class="logout-button" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="section-title">Admin Dashboard</h1>
+
+        <div class="admin-grid">
+            <div class="card">
+                <h2 th:text="${car.id == null ? 'Add Car' : 'Edit Car'}">Add Car</h2>
+
+                <form th:action="${car.id == null} ? @{/admin/add-car} : @{/admin/edit-car/{id}(id=${car.id})}"
+                      th:object="${car}"
+                      method="post">
+                    <div class="form-row">
+                        <label>Name</label>
+                        <input type="text" th:field="*{name}" required>
+                        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Model</label>
+                        <input type="text" th:field="*{model}" required>
+                        <span class="error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Color</label>
+                        <input type="text" th:field="*{color}" required>
+                        <span class="error" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Price</label>
+                        <input type="number" step="0.01" th:field="*{price}" required>
+                        <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Image Path or URL</label>
+                        <input type="text" th:field="*{image}">
+                    </div>
+
+                    <div class="form-row">
+                        <label>
+                            <input type="checkbox" th:field="*{available}">
+                            Available
+                        </label>
+                    </div>
+
+                    <button class="button" type="submit" th:text="${car.id == null ? 'Add Car' : 'Update Car'}">Save</button>
+                    <a class="button button-secondary" th:if="${car.id != null}" th:href="@{/admin}">Cancel Edit</a>
+                </form>
+            </div>
+
+            <div>
+                <h2 class="section-title">Cars</h2>
+
+                <div class="empty-state" th:if="${#lists.isEmpty(cars)}">
+                    <p>No cars have been added yet.</p>
+                </div>
+
+                <div class="table-wrapper" th:if="${!#lists.isEmpty(cars)}">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Model</th>
+                            <th>Color</th>
+                            <th>Price</th>
+                            <th>Available</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${cars}">
+                            <td th:text="${item.id}">1</td>
+                            <td th:text="${item.name}">Name</td>
+                            <td th:text="${item.model}">Model</td>
+                            <td th:text="${item.color}">Color</td>
+                            <td th:text="${item.price}">Price</td>
+                            <td>
+                                <span class="status status-yes" th:if="${item.available}">Yes</span>
+                                <span class="status status-no" th:unless="${item.available}">No</span>
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <a class="button button-secondary" th:href="@{/admin/edit-car/{id}(id=${item.id})}">Edit</a>
+                                    <form th:action="@{/admin/delete-car/{id}(id=${item.id})}" method="post">
+                                        <button class="button button-danger" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Bookings</h2>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(bookings)}">
+            <p>No bookings have been made yet.</p>
+        </div>
+
+        <div class="table-wrapper" th:if="${!#lists.isEmpty(bookings)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Car</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="booking : ${bookings}">
+                    <td th:text="${booking.id}">1</td>
+                    <td th:text="${booking.user.name}">User</td>
+                    <td th:text="${booking.car.name}">Car</td>
+                    <td th:text="${booking.startDate}">Start</td>
+                    <td th:text="${booking.endDate}">End</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

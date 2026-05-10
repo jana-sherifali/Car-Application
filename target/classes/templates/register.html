@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="navbar">
+        <a class="brand" th:href="@{/}">Carista</a>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/cars}">Cars</a>
+            <a th:href="@{/login}">Login</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card form-card">
+            <h1 class="section-title">Create Account</h1>
+
+            <form th:action="@{/register}" th:object="${user}" method="post">
+                <div class="form-row">
+                    <label>Name</label>
+                    <input type="text" th:field="*{name}" minlength="2" maxlength="50" required>
+                    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+
+                <div class="form-row">
+                    <label>Email</label>
+                    <input type="email"
+                           th:field="*{email}"
+                           pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"
+                           title="Enter a complete email address, for example name@gmail.com"
+                           required>
+                    <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    <span class="error" th:if="${emailError}" th:text="${emailError}"></span>
+                </div>
+
+                <div class="form-row">
+                    <label>Password</label>
+                    <input type="password" th:field="*{password}" minlength="6" maxlength="50" required>
+                    <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                </div>
+
+                <button class="button" type="submit">Register</button>
+            </form>
+
+            <p>
+                Already registered?
+                <a th:href="@{/login}">Login</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

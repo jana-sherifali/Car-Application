@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Car System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="navbar">
+        <a class="brand" th:href="@{/}">Carista</a>
+        <div class="nav-links">
+            <a th:href="@{/cars}">Cars</a>
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Register</a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-inner">
+            <h1>Easy Car System</h1>
+            <p>
+                Browse cars, view details, and book available cars online through a simple rental and selling system.
+            </p>
+            <a class="button" th:href="@{/cars}">Explore Cars</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="section-title">What You Can Do</h2>
+            <p>Users can register, login, browse cars, view car details, and make bookings.</p>
+            <p>Admins can add cars, edit car information, delete cars, change availability, and view bookings.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

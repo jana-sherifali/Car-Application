@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="navbar">
+        <a class="brand" th:href="@{/}">Carista</a>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/cars}">Cars</a>
+            <a th:href="@{/register}">Register</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card form-card">
+            <h1 class="section-title">Login</h1>
+
+            <p class="message" th:if="${param.registered}">Registration successful. Please login.</p>
+            <p class="message" th:if="${param.logout}">You have logged out successfully.</p>
+            <p class="error" th:if="${param.error}">Invalid email or password.</p>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-row">
+                    <label>Email</label>
+                    <input type="email"
+                           name="username"
+                           pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"
+                           title="Enter a complete email address, for example name@gmail.com"
+                           required>
+                </div>
+
+                <div class="form-row">
+                    <label>Password</label>
+                    <input type="password" name="password" minlength="6" maxlength="50" required>
+                </div>
+
+                <button class="button" type="submit">Login</button>
+            </form>
+
+            <p>
+                New user?
+                <a th:href="@{/register}">Create account</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

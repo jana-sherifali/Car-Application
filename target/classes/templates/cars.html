@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="navbar">
+        <a class="brand" th:href="@{/}">Carista</a>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin Dashboard</a>
+            <form class="logout-form" th:action="@{/logout}" method="post">
+                <button class="logout-button" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="section-title">Available Cars</h1>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(cars)}">
+            <p>No cars are available yet.</p>
+            <p sec:authorize="hasRole('ADMIN')"><a class="button" th:href="@{/admin}">Add Cars From Admin</a></p>
+        </div>
+
+        <div class="car-grid" th:if="${!#lists.isEmpty(cars)}">
+            <div class="car-card" th:each="car : ${cars}">
+                <img class="car-image" th:if="${car.image}" th:src="${car.image}" alt="Car image">
+                <div class="car-image" th:unless="${car.image}"></div>
+
+                <div class="car-content">
+                    <h2 th:text="${car.name}">Car name</h2>
+                    <p>
+                        <strong>Model:</strong>
+                        <span th:text="${car.model}">Model</span>
+                    </p>
+                    <p>
+                        <strong>Price:</strong>
+                        <span th:text="${car.price}">Price</span>
+                    </p>
+                    <p>
+                        <span class="status status-yes" th:if="${car.available}">Available</span>
+                        <span class="status status-no" th:unless="${car.available}">Not Available</span>
+                    </p>
+                    <a class="button" th:href="@{/cars/{id}(id=${car.id})}">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

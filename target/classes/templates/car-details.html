@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="navbar">
+        <a class="brand" th:href="@{/}">Carista</a>
+        <div class="nav-links">
+            <a th:href="@{/cars}">Cars</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin Dashboard</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p><a th:href="@{/cars}">Back to cars</a></p>
+
+        <div class="details-layout">
+            <div>
+                <img class="details-image" th:if="${car.image}" th:src="${car.image}" alt="Car image">
+                <div class="details-image" th:unless="${car.image}"></div>
+            </div>
+
+            <div class="card">
+                <h1 class="section-title" th:text="${car.name}">Car Name</h1>
+
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Model</th>
+                            <td th:text="${car.model}">Model</td>
+                        </tr>
+                        <tr>
+                            <th>Color</th>
+                            <td th:text="${car.color}">Color</td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td th:text="${car.price}">Price</td>
+                        </tr>
+                        <tr>
+                            <th>Availability</th>
+                            <td>
+                                <span class="status status-yes" th:if="${car.available}">Available</span>
+                                <span class="status status-no" th:unless="${car.available}">Not Available</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p th:if="${car.available}">
+                    <a class="button" th:href="@{/booking(carId=${car.id})}">Book This Car</a>
+                </p>
+
+                <p th:unless="${car.available}">
+                    This car is currently not available for booking.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
